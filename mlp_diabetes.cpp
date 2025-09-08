@@ -6,7 +6,7 @@
 #include <iomanip>
 using namespace std;
 
-// FunC'C#o da normalizaC'C#o dos dados entre 0 e 1
+// Função da normalização dos dados entre 0 e 1
 void normalizarDados(float dados[16][5], float dadosNorm[16][5]) {
 	for(int i = 0; i < 16; i++) {
 		for(int j = 0; j < 5; j++) {
@@ -31,7 +31,7 @@ int main() {
 	float pesosCamadaOculta[3][3];
 	float camadaOculta[3] = {0, 0, 0};
 
-	// Camada de SaC-da 2 neuronios
+	// Camada de Saída 2 neuronios
 	float pesosCamadaSaida[2][4];
 	float camadaSaida[2] = {0, 0};
 
@@ -55,11 +55,11 @@ int main() {
 		{1, 33, 95, 0, 1}
 	};
 
-	// NormalizaC'C#o dos dados entre 0 e 1
+	// Normalização dos dados entre 0 e 1
 	float dadosNorm[16][5];
 	normalizarDados(dados, dadosNorm);
 
-	// InicializaC'C#o dos pesos
+	// Inicialização dos pesos
 	for(int i = 0; i < 3; i++) {
 		for(int j = 0; j < 3; j++) {
 			pesosCamadaOculta[i][j] = ((float)rand() / RAND_MAX) * 2 - 1;
@@ -72,7 +72,7 @@ int main() {
 		}
 	}
 
-	// ConfiguraC'C#o para aleatorizaC'C#o
+	// Configuração para aleatorização
 	random_device rd;
 	mt19937 g(rd());
 
@@ -82,7 +82,7 @@ int main() {
 
 	// Treinamento da rede neural apenas com dados de treino
 	for(int e = 0; e < epocas; e++) {
-		// Aleatorizar a ordem dos dados de treino a cada C)poca
+		// Aleatorizar a ordem dos dados de treino a cada época
 		shuffle(indices_treino.begin(), indices_treino.end(), g);
 
 		for(int idx = 0; idx < indices_treino.size(); idx++) {
@@ -92,7 +92,7 @@ int main() {
 			for(int i = 0; i < 3; i++) camadaOculta[i] = 0;
 			for(int i = 0; i < 2; i++) camadaSaida[i] = 0;
 
-			// PropagaC'C#o - Camada Oculta
+			// Propagação - Camada Oculta
 			for(int i = 0; i < 3; i++) {
 				for(int j = 0; j < 3; j++) {
 					camadaOculta[i] += dadosNorm[linha][j] * pesosCamadaOculta[i][j];
@@ -100,7 +100,7 @@ int main() {
 				camadaOculta[i] = 1 / (1 + exp(-camadaOculta[i]));
 			}
 
-			// PropagaC'C#o - Camada SaC-da
+			// Propagação - Camada SaC-da
 			for(int i = 0; i < 2; i++) {
 				camadaSaida[i] = pesosCamadaSaida[i][0];
 				for(int j = 1; j < 4; j++) {
@@ -108,14 +108,14 @@ int main() {
 				}
 			}
 
-			// RetropropagaC'C#o - Camada SaC-da
+			// Retropropagação - Camada SaC-da
 			float deltaSaida[2];
 			for(int i = 0; i < 2; i++) {
 				float erro = dadosNorm[linha][i+3] - camadaSaida[i];
 				deltaSaida[i] = erro * 1;
 			}
 
-			// RetropropagaC'C#o - Camada Oculta
+			// Retropropagação - Camada Oculta
 			float deltaOculta[3];
 			for(int i = 0; i < 3; i++) {
 				float soma = 0;
@@ -125,7 +125,7 @@ int main() {
 				deltaOculta[i] = camadaOculta[i] * (1 - camadaOculta[i]) * soma;
 			}
 
-			// AtualizaC'C#o dos pesos - Camada SaC-da
+			// Atualização dos pesos - Camada SaC-da
 			for(int i = 0; i < 2; i++) {
 				pesosCamadaSaida[i][0] += taxaAprendizado * deltaSaida[i] * 1; // Bias
 				for(int j = 1; j < 4; j++) {
@@ -133,7 +133,7 @@ int main() {
 				}
 			}
 
-			// AtualizaC'C#o dos pesos - Camada Oculta
+			// Atualização dos pesos - Camada Oculta
 			for(int i = 0; i < 3; i++) {
 				pesosCamadaOculta[i][0] += taxaAprendizado * deltaOculta[i] * 1; // Bias
 				for(int j = 1; j < 3; j++) {
@@ -142,7 +142,7 @@ int main() {
 			}
 		}
 
-		// Exibir progresso a cada 100 C)pocas
+		// Exibir progresso a cada 100 épocas
 		if(e % 100 == 0) {
 			cout << "Epoca: " << e << " concluida" << endl;
 		}
@@ -159,7 +159,7 @@ int main() {
 		for(int i = 0; i < 3; i++) camadaOculta[i] = 0;
 		for(int i = 0; i < 2; i++) camadaSaida[i] = 0;
 
-		// Propagacao para teste
+		// Propagação para teste
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				camadaOculta[i] += dadosNorm[linha][j] * pesosCamadaOculta[i][j];
@@ -222,7 +222,7 @@ int main() {
 		for(int i = 0; i < 3; i++) camadaOculta[i] = 0;
 		for(int i = 0; i < 2; i++) camadaSaida[i] = 0;
 
-		// PropagaC'C#o para teste
+		// Propagação para teste
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 3; j++) {
 				camadaOculta[i] += dadosNorm[linha][j] * pesosCamadaOculta[i][j];
@@ -273,7 +273,7 @@ int main() {
 	}
 	cout << "Acertos no teste: " << acertos_teste << "/6" << endl;
 
-	// Calcular e exibir a acurC!cia
+	// Calcular e exibir a acurácia
 	float accuracy_treino = (float)acertos_treino / 10 * 100;
 	float accuracy_teste = (float)acertos_teste / 6 * 100;
 
