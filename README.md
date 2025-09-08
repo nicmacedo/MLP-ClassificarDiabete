@@ -86,7 +86,6 @@ Rede generalizando bem!
 ```cpp
 int epocas = 1000;                   // Número de épocas de treinamento
 float taxaAprendizado = 0.1f;        // Taxa de aprendizado
-int neuronios_oculta = 3;            // Neurônios na camada oculta
 ```
 
 ## 📚 Referências
